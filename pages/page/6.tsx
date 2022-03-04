@@ -1,14 +1,11 @@
-import jwtDecode from 'jwt-decode';
-import { optionalAuthGetServerSideProps } from '../lib/optionalAuthGetServerSideProps';
+import { requiredAuthGetServerSideProps } from '../../lib/requiredAuthGetServerSideProps';
 import Link from 'next/link';
 
-const ServerSideAuth = (props) => {
+const Page6 = () => {
   return <div>
     <h1>This is a page with AUTH</h1>
 
     <h2>What is the point?</h2>
-    <p>We want to get to the bottom of "How do we know a user is logged in" and demystify such complex terms as "we", "know", "a user" and "is logged in". I'll take it as a given that you know what "How do" means.</p>
-
     <p>This is to show roughly how our auth flow works, and what we need to do to work out if a user is logged in or
       not, as well as making sure they can't cheese it and make us think they're someone they're not.</p>
     <p>The key things to understand from all of this are:</p>
@@ -28,16 +25,24 @@ const ServerSideAuth = (props) => {
       </li>
     </ul>
 
-    <h2>Am I logged in now?</h2>
-    <p>I know that you <span style={{ fontWeight: 'bold' }}>{props.auth ? `DO` : `DON'T`}</span> have some auth state
-      according to the cookie.</p>
-    {!props.auth && <p>You probably want to sign in now: <a href='/api/auth/login'>Login</a></p>}
-    {props.auth && <p>Does this mean I'm logged in? Let's check what we now know...</p>}
+    <h2>So am I logged in?</h2>
+    <p>...?</p>
 
-    {props.auth && <p><Link href='/page/flow'><a>Enough talk, let's go!</a></Link></p>}
+    <h2>Talking points</h2>
+    <ul>
+      <li>What are the weak points of all of this?</li>
+      <li>What are the specific limitations of any aspect of _how_ we did this?</li>
+      <li>How else could we do this to avoid any potential tampering?</li>
+      <li>Are there any performance considerations for any of this?</li>
+      <li>The data on this page is provided by the server checking a cookie containing a huge bunch of serialised data. How else could we get this to the browser?</li>
+    </ul>
+
+    <p><Link href='/page/5'><a>Go to the previous page</a></Link></p>
+    <p><Link href='/'><a>Go home</a></Link></p>
+
   </div>
 }
 
-export const getServerSideProps = optionalAuthGetServerSideProps;
+export const getServerSideProps = requiredAuthGetServerSideProps;
 
-export default ServerSideAuth;
+export default Page6;
