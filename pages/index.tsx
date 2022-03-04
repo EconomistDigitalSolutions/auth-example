@@ -1,5 +1,6 @@
 import { GetServerSideProps } from 'next';
 import jwtDecode from 'jwt-decode';
+import { getServerSideProps } from '../lib/getServerSideProps';
 
 const ServerSideAuth = (props) => {
   return <div>
@@ -80,13 +81,6 @@ const ServerSideAuth = (props) => {
   </div>
 }
 
-export const getServerSideProps: GetServerSideProps = (context) => {
-  console.log(`[/index]: Getting the user's session data out of the cookie and providing to our Next.js app`);
-  return {
-    props: {
-      auth: context.req.cookies['my_auth_cookie'] === undefined ? null : JSON.parse(context.req.cookies['my_auth_cookie']),
-    }
-  };
-}
+export { getServerSideProps };
 
 export default ServerSideAuth;

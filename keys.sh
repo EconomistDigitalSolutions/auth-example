@@ -1,3 +1,4 @@
+mkdir .keys
 openssl req -x509 -out .keys/localhost.crt -keyout .keys/localhost.key \
   -days 365 \
     -newkey rsa:2048 -nodes -sha256 \
