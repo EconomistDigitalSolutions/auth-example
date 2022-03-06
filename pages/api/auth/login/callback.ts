@@ -1,5 +1,7 @@
 import { NextApiHandler } from 'next';
 import { getOAuthClient } from '../../../../lib/getOAuthClient';
+import { getRedis } from '../../../../lib/getRedis';
+import { randomUUID } from 'crypto';
 
 // note that the route for this needs to be the same as per engagement or we can't authenticate at all
 const handler: NextApiHandler = async (req, res) => {
@@ -14,12 +16,14 @@ const handler: NextApiHandler = async (req, res) => {
   // - refresh token (a long-lived token we can use to get a new id token from SF)
   // - access token (a token we can use to make authenticated requests directly to SF on behalf of the user)
 
+  const token = randomUUID();
+  const redis = await getRedis();
+  await redis.SET(`session:${token}`, JSON.stringify(session.data));
+
   console.log(`[/api/auth/login/callback]: Got user session data, storing as a cookie and redirecting back to a proper page`);
-  // it is our responsibility to remember this data however we need to. Cookies is one way:
-  // we could also store this data in a K-V store, then set a pointer to that data as a cookie if we so wished
   res.writeHead(302, {
     Location: 'https://localhost:3000',
-    'Set-Cookie': `my_auth_cookie=${JSON.stringify(session.data)}; path=/`, // probably want this to be more secure...
+    'Set-Cookie': `session_token=${token}; path=/`, // probably want this to be more secure...
   }); // we might want to go somewhere else here in reality
   res.end();
 }
